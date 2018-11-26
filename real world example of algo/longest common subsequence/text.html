@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <style>
+      .bold-italic {
+        font-weight: bold;
+        font-style: italic;
+      }
+      .deleted {
+        color: red;
+        text-decoration: line-through;
+      }
+      .added {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="results"></div>
+
+    <script src="text_difference.js"></script>
+    <script>
+      // The fourth element in each test set specifies
+      // if the strings should be compared by words (true)
+      // or by characters (false).
+      let testSet0 = ["ABCD", "AFKD", "AD", false];
+      let testSet1 = [
+        "I am waiting for snow.",
+        "I've been waiting for snow.",
+        "I  waiting for snow.",
+        true
+      ];
+      let testSet2 = [
+        "breakfast I had tooday was awsome.",
+        "the breakfast I had today was awesome",
+        "breakfast I had today was awsome",
+        true
+      ];
+      // let testSets = [testSet0];
+      let testSets = [testSet0, testSet1, testSet2];
+
+      testSets.forEach(function(testSet) {
+        document.getElementById("results").innerHTML += showTextDiffResult(
+          testSet[0],
+          testSet[1],
+          testSet[2],
+          testSet[3]
+        );
+      });
+
+      function showTextDiffResult(original, edited, expected, splitByWords) {
+        let textDiffResult = textDiff(original, edited, splitByWords);
+        let result = `<p>
+                <div><span class='bold-italic'>Original text: </span>${original}</div>
+                <div><span class='bold-italic'>Edited text: </span>${edited}</div>
+                <div><span class='bold-italic'>Expected result: </span>${expected}</div>
+                <div><span class='bold-italic'>Actual result: </span>${
+                  textDiffResult.lcs
+                }</div>
+                <div><span class='bold-italic'>Deleted: </span>${
+                  textDiffResult.deleted
+                }</div>
+                <div><span class='bold-italic'>Added: </span>${
+                  textDiffResult.added
+                }</div>
+              </p>`;
+        return result;
+      }
+    </script>
+  </body>
+</html>
